@@ -52,12 +52,12 @@ short PCM_SigIn[256]={
 -------------------------------------*/
 
 void PCM_Encode(void);
-void PCM_Dncode(void);
+void PCM_Decode(void);
 
 void main()
 {
     PCM_Encode();
-    PCM_Dncode();
+    PCM_Decode();
     exit(0);
     do 
     {
@@ -166,10 +166,11 @@ void PCM_Encode(void)
         EncOut[i][6] = (temp - (EncOut[i][4]<<3) - (EncOut[i][5]<<2)) >> 1;
         EncOut[i][7] = (temp - (EncOut[i][4]<<3) - (EncOut[i][5]<<2) - (EncOut[i][6]<<1));
 
+        //printf("%02d\n",EncOut[i][0] * 128 + EncOut[i][1] * 64 + EncOut[i][2] * 32 + EncOut[i][3] * 16 + EncOut[i][4] * 8 + EncOut[i][5] * 4 + EncOut[i][6] * 2 + EncOut[i][7] * 1);
     }
 }
 
-void PCM_Dncode(void)
+void PCM_Decode(void)
 {
     for( i = 0 ; i < 256 ; i ++)
     {
@@ -187,6 +188,7 @@ void PCM_Dncode(void)
         st = slot[temp];
         dt = (datarec[4] * 8 + datarec[5] * 4 + datarec[6] * 2 + datarec[7]) * level[temp];
         DecOut[i] = ss * (st + dt);
-        printf("%d\n",DecOut[i]);
+
+        //printf("%d\n",DecOut[i]);
     }
 }
