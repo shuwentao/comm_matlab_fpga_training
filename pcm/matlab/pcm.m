@@ -27,7 +27,7 @@ title('输入信号波形');
 %   A律非均匀PCM编码
 %---------------------------------------------------
 for i = 1 : LEN_SIG
-    if SrcSignal(i) > 0
+    if SrcSignal(i) >= 0
         out(i,1) = 0 ;
     else 
         out(i,1) = 1 ;
@@ -97,10 +97,17 @@ for i = 1 : LEN_SIG
         out(i,5:8) = t(1:4)
     end
 end
-
 EncOut = reshape(out',1,8*LEN_SIG);
 
-
+% 打印编码数据
+% fid_enc = fopen('PCM_enc.txt','W');
+% 
+% for j = 1 : LEN_SIG
+%     x = out(j,1)*128 + out(j,2)*64 + out(j,3)*32 + out(j,4)*16 + out(j,5)*8 + out(j,6)*4 + out(j,7)*2 + out(j,8);
+%     fprintf(fid_enc,"%d\n",x);
+% end
+% 
+% fclose(fid_enc);
 
 %---------------------------------------------------
 %   A律非均匀PCM译码
@@ -136,6 +143,13 @@ for i = 1 : LEN_SIG
     dt = (in(i,5) * 8 + in(i,6) * 4 + in(i,7) * 2 + in(i,8)) * step(tmp);
     DecOut(i) = ss * (st + dt);
 end
+
+% 打印解码数据
+% fid_dec = fopen('PCM_dec.txt','W');
+% for j = 1 : LEN_SIG
+%     fprintf(fid_dec,"%d\n",DecOut(j));
+% end
+% fclose(fid_dec);
 
 subplot(2,1,2);plot(View_X,DecOut(View_X));
 axis([0 LEN_VIEW-1 -SCALE_PCM SCALE_PCM]);
